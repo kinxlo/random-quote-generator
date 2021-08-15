@@ -1,5 +1,5 @@
 # random-quote-generator
- https://kinxlo.github.io/random-quote-generator/
+
 
 ## Project setup
 ```
