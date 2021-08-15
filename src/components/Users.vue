@@ -1,6 +1,7 @@
 
 <script>
 import User from "./User.vue";
+import { computed } from "vue";
 
 export default {
   components: {
@@ -9,18 +10,26 @@ export default {
 
   props: ["users"],
 
-  setup() {},
+  setup(props) {
+    // const people = ref(null);
+
+    const minUsers = computed(() => {
+      return props.users.slice(0, 5);
+    });
+
+    return { minUsers };
+  },
 };
 </script>
 
 
 <template>
   <div id="users-component">
-    <router-link to="/quoters">
+    <router-link :to="{ name: 'Quoters' }">
       <p class="all-quoters">View all quoters</p>
     </router-link>
     <section class="users-container">
-      <div v-for="user in users" :key="user.id">
+      <div v-for="user in minUsers" :key="user.id">
         <User :user="user" />
       </div>
     </section>
@@ -43,6 +52,7 @@ export default {
     //   border: 1px solid blue;
     width: 100%;
     display: flex;
+    justify-content: space-between;
   }
 }
 </style>

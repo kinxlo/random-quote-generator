@@ -1,7 +1,7 @@
 
 <script>
 import Users from "../components/Users.vue";
-import { ref } from "vue";
+import getUsers from "../composables/getUsers";
 
 export default {
   components: {
@@ -9,17 +9,11 @@ export default {
   },
 
   setup() {
-    const users = ref([]);
-
-    const getData = async () => {
-      let res = await fetch(`https://jsonplaceholder.typicode.com/users`);
-      let data = await res.json();
-      users.value = data.slice(0, 5);
-    };
+    const { users, error, getData } = getUsers();
 
     getData();
 
-    return { users };
+    return { users, error };
   },
 };
 </script>
@@ -28,7 +22,11 @@ export default {
 <template>
   <div id="home-page">
     <!-- <h4>Quotes Home page</h4> -->
-    <Users :users="users" />
+    <div v-if="error">{{ error }}</div>
+    <div v-if="users.length">
+      <Users :users="users" />
+    </div>
+    <div v-else>Loading...</div>
     <router-link to="/quotes">
       <button class="random-btn">
         <i class="lni lni-plus"></i>Show New Quote Of the Day

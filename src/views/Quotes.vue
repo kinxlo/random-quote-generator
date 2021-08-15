@@ -1,36 +1,82 @@
 
 <script>
-export default {};
+import getQuotes from "../composables/getQuotes";
+import { ref, onMounted } from "vue";
+export default {
+  setup() {
+    const { quotes, getData } = getQuotes();
+    const randomNextQuote = ref("");
+    const newQuote = ref(false);
+    const loading = ref(true);
+
+    getData();
+
+    const getQouteOfTheDay = () => {
+      setTimeout(() => {
+        let intQuoteCount = 1643; // The number of quotes in your library
+        let dtNow = new Date();
+        let intTZOffset = dtNow.getTimezoneOffset() * 60000; // automatically adjust for user timezone
+        let intNow = dtNow.getTime() - intTZOffset;
+        let intDay = Math.floor(intNow / 86400000); // The number of 'local' days since Jan 1, 1970
+        let indexOfQuote = intDay % intQuoteCount;
+
+        console.log(indexOfQuote);
+
+        randomNextQuote.value = quotes.value[indexOfQuote];
+        loading.value = false;
+      }, 2000);
+    };
+
+    const getNextQuote = () => {
+      const randomNumber = 1 + Math.floor(Math.random() * quotes.value.length);
+      randomNextQuote.value = quotes.value[randomNumber];
+      newQuote.value = true;
+      // console.log(randomNextQuote);
+    };
+
+    onMounted(() => {
+      getQouteOfTheDay();
+    });
+
+    return { quotes, getNextQuote, randomNextQuote, newQuote, loading };
+  },
+};
 </script>
 
 
   <template>
   <div id="quotes-page">
-    <router-link to="/quoters">
+    <router-link to="/">
       <p class="previous-page">back to previous page</p>
     </router-link>
-    <h1>Quote of the day</h1>
-    <section class="quote-preview">
+    <div v-if="newQuote">
+      <h1>Quote</h1>
+    </div>
+    <div v-else>
+      <h1>Quote of the day</h1>
+    </div>
+    <section v-if="!loading" class="quote-preview">
+      <!-- <div v-if="newQuote"> -->
       <article class="author-menu">
         <div class="quote-author">
-          <h5>Dianne Russell</h5>
-          <p>@amandadasilva</p>
+          <h5>{{ randomNextQuote.author }}</h5>
+          <p>@{{ randomNextQuote.author }}</p>
         </div>
         <i class="fas fa-ellipsis-h"></i>
       </article>
       <div class="quotes-message">
         <p>
-          While Corfu give us the ability to shoot by the sea with amazing blue
-          background full of light of the sky, Florina give us its gentle side.
-          The humble atmosphere and Light of Florina which comes.
+          {{ randomNextQuote.text }}
         </p>
         <div class="likes">
           <i class="far fa-heart"></i>
           <span>1.6k</span>
         </div>
       </div>
+      <!-- </div> -->
     </section>
-    <button class="next-btn">
+    <div v-else>Loading...</div>
+    <button @click="getNextQuote" class="next-btn">
       <i class="lni lni-plus"></i>View another Quote
     </button>
   </div>
@@ -67,6 +113,7 @@ export default {};
     justify-content: space-between;
     padding: 16px;
     margin: 24px 0;
+    background-color: #fff;
 
     .author-menu {
       width: 80%;
@@ -134,6 +181,28 @@ export default {};
     .lni-plus {
       margin: 0 10px;
       font-size: 18px;
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  #quotes-page {
+    .previous-page {
+      margin: 0 2rem 51px 0;
+    }
+
+    h1 {
+      margin-left: 2rem;
+    }
+
+    .quote-preview {
+      width: 624px;
+      margin-left: auto;
+      margin-right: auto;
+
+      .author-menu {
+        width: 90%;
+      }
     }
   }
 }

@@ -13,6 +13,7 @@ const routes = [
     path: '/quoters',
     name: 'Quoters',
     component: Quoters,
+    props: true,
   },
   {
     path: '/quotes',

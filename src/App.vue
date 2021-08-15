@@ -26,8 +26,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background-color: #e5e5e5;
+}
+
 .cc-container {
-  border: 1px solid red;
+  // border: 1px solid red;
   width: 100%;
   height: fit-content;
   padding: 0 9.11px;
@@ -58,5 +62,16 @@ h1 {
   font-weight: 800;
   letter-spacing: 0.01em;
   color: #1d1929;
+}
+
+@media (min-width: 1440px) {
+  .cc-container {
+    // border: 1px solid red;
+    width: 100%;
+    max-width: 700px;
+    height: fit-content;
+    margin: 0 auto;
+    padding: 0 9.11px;
+  }
 }
 </style>

@@ -1,30 +1,36 @@
 
 
 <script>
-export default {};
+export default {
+  props: ["user"],
+
+  setup() {
+    // console.log(props.user);
+  },
+};
 </script>
 
 <template>
   <section id="quoter-list">
     <article class="quote-person">
       <div class="author-city">
-        <h6>Chantal Shelburne</h6>
-        <p>Memphis, TN, US</p>
+        <h6>{{ user.name }}</h6>
+        <p>{{ user.address.city }}</p>
       </div>
       <i class="bx bx-user-plus"></i>
     </article>
-    <p class="view-all">View All</p>
   </section>
 </template>
 
 <style lang = "scss" scoped>
 #quoter-list {
   .quote-person {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin: 2rem 0;
 
     .author-city {
       display: flex;
@@ -47,11 +53,24 @@ export default {};
       color: #4d77ff;
     }
   }
-  .view-all {
-    font-size: 12px;
-    font-weight: bold;
-    margin: 16px 0;
-    color: #4d77ff;
+}
+
+@media (min-width: 1440px) {
+  #quoter-list {
+    .quote-person {
+      /* border: 1px solid red; */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin: 1rem 0;
+
+      i {
+        font-size: 24px;
+        color: #4d77ff;
+        margin-right: 4rem;
+      }
+    }
   }
 }
 </style>
